@@ -68,9 +68,16 @@
 .country-font span {
   font-weight: lighter;
 }
+.language-container {
+  display: flex;
+  border: 1px solid black;
+  gap: 5px;
+}
 .language {
-  /* border: 2px solid red; */
-  width: 100px;
+  border: 2px solid red;
+  padding: 3px 7px;
+  background-color: green;
+  /* width: 100px; */
 }
 .search-box {
   width: 500px;

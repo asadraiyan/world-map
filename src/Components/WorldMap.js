@@ -8,12 +8,10 @@ const WorldMap = () => {
   console.log("mapData", mapData);
 
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [search, setSearch] = useState([]);
+  const [search, setSearch] = useState("");
+  // const [filteredCountries, setFilteredCountries] = useState(mapData?.features);
 
-  const handleClick = async (event) => {
-    console.log("event.target =", event.target);
-    const countryCode = event.target.feature?.properties?.ISO_A3;
-    // const countryCode = event.target.options.countryCode;
+  const getCountryData = async (countryCode) => {
     try {
       const response = await axios.get(
         `https://restcountries.com/v3/alpha/${countryCode}`
@@ -24,6 +22,13 @@ const WorldMap = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleClick = async (event) => {
+    console.log("event.target =", event.target);
+    const countryCode = event.target.feature?.properties?.ISO_A3;
+    // const countryCode = event.target.options.countryCode;
+    getCountryData(countryCode);
     event.target.setStyle({
       color: "yellow",
       fillColor: "red",
@@ -41,31 +46,49 @@ const WorldMap = () => {
   };
 
   const getCurrency = () => {
-    const currencyData = selectedCountry.currencies;
-    const currencyList = Object.keys(currencyData);
-    const currencyKey = currencyList[0];
-    const currencyName = currencyData[currencyKey].name;
-    const currencySymbol = currencyData[currencyKey].symbol;
-    return {
-      name: currencyName,
-      symbol: currencySymbol,
-    };
-  };
-  const getLanguage = () => {
-    const languagesData = selectedCountry.languages;
-    const languageList = Object.keys(languagesData);
-    const languageKey1 = languageList[0];
-    const languageKey2 = languageList[1];
-    const languageKey3 = languageList[2];
-    const languageName1 = languagesData[languageKey1];
-    const languageName2 = languagesData[languageKey2];
-    const languageName3 = languagesData[languageKey3];
-    return [languageName1, languageName2, languageName3];
+    if (typeof selectedCountry === "object") {
+      const currencyData = selectedCountry.currencies;
+      const currencyList = Object.keys(currencyData);
+      const currencyKey = currencyList[0];
+      const currencyName = currencyData[currencyKey].name;
+      const currencySymbol = currencyData[currencyKey].symbol;
+      return {
+        name: currencyName,
+        symbol: currencySymbol,
+      };
+    }
   };
 
+  const getLanguage = () => {
+    if (typeof selectedCountry === "object") {
+      const languagesData = selectedCountry?.languages;
+      const languageList = Object.keys(languagesData);
+      const languageKey1 = languageList[0];
+      const languageKey2 = languageList[1];
+      const languageKey3 = languageList[2];
+      const languageName1 = languagesData[languageKey1];
+      const languageName2 = languagesData[languageKey2];
+      const languageName3 = languagesData[languageKey3];
+      return [languageName1, languageName2, languageName3];
+    }
+  };
+
+  console.log("selectedCountry =", selectedCountry);
+
   const handleSearch = (event) => {
-    setSearch(event.target.value);
+    const term = event.target.value?.toLowerCase();
+    setSearch(term);
     // console.log("type");
+    if (term !== "") {
+      for (let i = 0; i < mapData?.features?.length; i++) {
+        const country = mapData?.features[i];
+        if (country.properties.ADMIN?.toLowerCase() === term) {
+          const countryCode = country.properties.ISO_A3;
+          getCountryData(countryCode);
+          break;
+        }
+      }
+    }
   };
 
   return (
@@ -118,9 +141,16 @@ const WorldMap = () => {
                 <p className="country-font">
                   Latlang: <span>{selectedCountry.latlng}</span>
                 </p>
-                <p className="country-font">
-                  Laanguages: <span className="language">{getLanguage()}</span>
-                </p>
+                <div className="language-container">
+                  Languages:{" "}
+                  {getLanguage()?.map((language) => {
+                    if (language) {
+                      return <span className="language">{language}</span>;
+                    } else {
+                      return <></>;
+                    }
+                  })}
+                </div>
                 <p className="country-font">
                   Area: <span>{selectedCountry.area}</span>
                 </p>
