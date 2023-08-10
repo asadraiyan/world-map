@@ -2,12 +2,33 @@ import React, { useState } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import mapData from "../data/countries.json";
 import axios from "axios";
+import { BsSearch } from "react-icons/bs";
 
 const WorldMap = () => {
   console.log("mapData", mapData);
 
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState([]);
+
+  const handleClick = async (event) => {
+    console.log("event.target =", event.target);
+    const countryCode = event.target.feature?.properties?.ISO_A3;
+    // const countryCode = event.target.options.countryCode;
+    try {
+      const response = await axios.get(
+        `https://restcountries.com/v3/alpha/${countryCode}`
+      );
+      console.log(response.data[0]);
+      setSelectedCountry(response.data[0]);
+      // setSearch(response.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+    event.target.setStyle({
+      color: "yellow",
+      fillColor: "red",
+    });
+  };
 
   const onEachCountry = (country, layer) => {
     console.log("country =", country);
@@ -15,20 +36,7 @@ const WorldMap = () => {
     layer.bindPopup(countryName);
 
     layer.on({
-      click: async (event) => {
-        console.log("event.target =", event.target);
-        const countryCode = event.target.feature.properties?.ISO_A3;
-        // const countryCode = event.target.options.countryCode;
-        try {
-          const response = await axios.get(
-            `https://restcountries.com/v3/alpha/${countryCode}`
-          );
-          console.log(response.data[0]);
-          setSelectedCountry(response.data[0]);
-        } catch (error) {
-          console.error(error);
-        }
-      },
+      click: handleClick,
     });
   };
 
@@ -55,20 +63,24 @@ const WorldMap = () => {
     return [languageName1, languageName2, languageName3];
   };
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+    // console.log("type");
   };
 
   return (
     <>
       <div className="main-container">
-        <input
-          type="search"
-          placeholder="Search"
-          className="search-box"
-          value={search}
-          onChange={handleSearch}
-        />
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Search"
+            className="search-box"
+            value={search}
+            onChange={handleSearch}
+          />
+          <BsSearch className="bs-search" />
+        </div>
         <div className="container">
           <div className="map-container">
             <MapContainer
