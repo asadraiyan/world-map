@@ -5,20 +5,18 @@ import axios from "axios";
 import { BsSearch } from "react-icons/bs";
 
 const WorldMap = () => {
-  console.log("mapData", mapData);
+  // console.log("mapData", mapData);
 
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [search, setSearch] = useState("");
-  // const [filteredCountries, setFilteredCountries] = useState(mapData?.features);
 
   const getCountryData = async (countryCode) => {
     try {
       const response = await axios.get(
         `https://restcountries.com/v3/alpha/${countryCode}`
       );
-      console.log(response.data[0]);
+      // console.log(response.data[0]);
       setSelectedCountry(response.data[0]);
-      // setSearch(response.data[0]);
     } catch (error) {
       console.error(error);
     }
@@ -27,7 +25,6 @@ const WorldMap = () => {
   const handleClick = async (event) => {
     console.log("event.target =", event.target);
     const countryCode = event.target.feature?.properties?.ISO_A3;
-    // const countryCode = event.target.options.countryCode;
     getCountryData(countryCode);
     event.target.setStyle({
       color: "yellow",
@@ -36,7 +33,7 @@ const WorldMap = () => {
   };
 
   const onEachCountry = (country, layer) => {
-    console.log("country =", country);
+    // console.log("country =", country);
     const countryName = country.properties.ADMIN;
     layer.bindPopup(countryName);
 
@@ -73,7 +70,7 @@ const WorldMap = () => {
     }
   };
 
-  console.log("selectedCountry =", selectedCountry);
+  // console.log("selectedCountry =", selectedCountry);
 
   const handleSearch = (event) => {
     const term = event.target.value?.toLowerCase();
