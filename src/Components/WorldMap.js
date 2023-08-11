@@ -94,7 +94,7 @@ const WorldMap = () => {
         <div className="input-box">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="search the country"
             className="search-box"
             value={search}
             onChange={handleSearch}
@@ -114,7 +114,7 @@ const WorldMap = () => {
           {selectedCountry && (
             <div className="countries">
               <div className="country-flag">
-                <h2>{selectedCountry.name.common}</h2>
+                <h2>{selectedCountry.name.common.toUpperCase()}</h2>
                 <img
                   src={selectedCountry.flags[1]}
                   className="flag-img"
@@ -139,7 +139,7 @@ const WorldMap = () => {
                   Latlang: <span>{selectedCountry.latlng}</span>
                 </p>
                 <div className="language-container">
-                  Languages:{" "}
+                  <p className="country-font">Languages: </p>
                   {getLanguage()?.map((language) => {
                     if (language) {
                       return <span className="language">{language}</span>;

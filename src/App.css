@@ -3,9 +3,7 @@
   margin: 0;
   box-sizing: border-box;
 }
-/* .leaflet-container {
-  background-color: white;
-} */
+
 .main-container {
   height: 100vh;
   width: 100%;
@@ -26,36 +24,40 @@
 .country-flag {
   display: flex;
   flex-direction: column;
-  width: 200px;
-  height: 150px;
+  width: 275px;
+  height: 215px;
+  /* border: 2px solid red; */
 }
 .country-flag h2 {
   text-align: center;
+  margin-bottom: 8px;
+  font-size: 30px;
 }
 .flag-img {
-  width: 200px;
-  height: 150px;
-  margin-top: 7px;
+  width: 260px;
+  height: 160px;
+  margin-top: 5px;
 }
 .countries {
   display: flex;
   flex-direction: column;
   width: 500px;
   /* border: 2px solid black; */
-  gap: 30px;
-  justify-content: center;
+  gap: 10px;
+  /* justify-content: center; */
+  margin-bottom: 50px;
 }
 
 .container {
   /* border: 2px solid green; */
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 75px;
+  gap: 50px;
 }
 .country-data {
-  width: 300px;
+  width: 350px;
   display: flex;
   flex-direction: column;
   /* border: 2px solid blue; */
@@ -64,32 +66,40 @@
 }
 .country-font {
   font-weight: bold;
+  font-size: 18px;
 }
 .country-font span {
   font-weight: lighter;
 }
 .language-container {
   display: flex;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   gap: 5px;
 }
 .language {
-  border: 2px solid red;
-  padding: 3px 7px;
-  background-color: green;
-  /* width: 100px; */
+  /* border: 2px solid red; */
+  padding: 2px 8px 5px 8px;
+  background-color: rgb(18, 152, 18);
+  border-radius: 2.5px;
+  color: white;
+}
+.input-box {
+  display: flex;
+  width: 500px;
+  position: relative;
+  align-items: center;
 }
 .search-box {
   width: 500px;
-  height: 30px;
+  height: 35px;
   border-radius: 5px;
   outline: none;
   padding: 5px;
-  position: relative;
+  font-size: 17px;
 }
 .bs-search {
   position: absolute;
-  right: 375px;
-  top: 30px;
+  right: 12px;
+  top: 10.5px;
   cursor: pointer;
 }
